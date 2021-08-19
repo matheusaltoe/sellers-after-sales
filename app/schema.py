@@ -1,9 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-class MessageSchema(BaseModel):
-    description: str
-
 class SchedulerSchema(BaseModel):
     date_hour: datetime
     message: str
@@ -11,11 +8,13 @@ class SchedulerSchema(BaseModel):
     customer_id: int
     channel_id: int
 
+
 class CustomerSchema(BaseModel):
     name: str
     email: str
-    phone: str   
+    phone: str
+
 
 class ChannelSchema(BaseModel):
-    id: int 
-    description: str   
+    id: int
+    description: str

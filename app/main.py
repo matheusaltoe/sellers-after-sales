@@ -1,23 +1,20 @@
-from typing import Optional
-from fastapi import FastAPI
-from pika_client import PikaClient
-from router import router
 import asyncio
 import logging
-from fastapi import FastAPI, Request
-import time
-import logging
-
-from logging.config import dictConfig
-from log_conf import log_config
-dictConfig(log_config)
-logger = logging.getLogger('foo-logger')
 from database import SessionLocal
+from fastapi import FastAPI
+from log_conf import log_config
+from logging.config import dictConfig
 from models import Scheduler
+from pika_client import PikaClient
+from router import router
+from fastapi import FastAPI, Request
+
+dictConfig(log_config)
+logger = logging.getLogger('app-logger')
 
 db = SessionLocal()
 
-class FooApp(FastAPI):
+class SellerApp(FastAPI):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -25,15 +22,14 @@ class FooApp(FastAPI):
 
     @classmethod
     def log_incoming_message(cls, message: dict):
-        """Method to do something meaningful with the incoming message"""
-        db_user = Scheduler(
+        db_scheduler = Scheduler(
             **message
         )
-        db.add(db_user)
+        db.add(db_scheduler)
         db.commit()
-        logger.info('Here we got incoming message %s', message)
-time.sleep(5)
-app = FooApp()
+        logger.info('Incoming message : %s', message)
+
+app = SellerApp()
 app.include_router(router, prefix='/api/v1')
 
 

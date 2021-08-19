@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -13,9 +13,10 @@ class Scheduler(Base):
     status_send = Column(Boolean)
 
     customer_id = Column(Integer, ForeignKey('customer.id'))
-    custom = relationship('Customer', back_populates='owner')
+    custom = relationship('Customer', back_populates='cust')
     channel_id = Column(Integer, ForeignKey('channel.id'))
     chann = relationship('Channel', back_populates='sch')
+
 
 class Customer(Base):    
     __tablename__ = "customer"
@@ -25,11 +26,12 @@ class Customer(Base):
     email = Column(String, unique=True, index=True)
     phone = Column(String)
 
-    owner = relationship("Scheduler", back_populates="custom")
+    cust = relationship("Scheduler", back_populates="custom")
+
 
 class Channel(Base):
     __tablename__ = "channel"
-    
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     description = Column(String, unique=True)
 

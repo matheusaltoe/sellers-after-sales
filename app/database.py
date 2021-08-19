@@ -1,18 +1,15 @@
 import os
-from os import environ
 from sqlalchemy import create_engine, orm
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-POSTGRES_USER = environ.get("POSTGRES_USER")
-POSTGRES_PASSWORD = environ.get("POSTGRES_PASSWORD")
-POSTGRES_SERVER = environ.get("POSTGRES_HOST")
-POSTGRES_PORT = environ.get("POSTGRES_PORT")
-POSTGRES_DB = environ.get("POSTGRES_DATABASE")
+POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
+POSTGRES_DB = os.getenv("POSTGRES_DB", "sellerdb")
 
-#SQLALCHEMY_DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@docker_db_1:{POSTGRES_PORT}/{POSTGRES_DB}"
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/teste"
-#SQLALCHEMY_DATABASE_URL = os.getenv("DB_CONN")
+SQLALCHEMY_DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
@@ -33,4 +30,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
