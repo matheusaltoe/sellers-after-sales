@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "sellers-after-sales"
+version = "0.1.0"
+description = ""
+authors = ["Matheus Altoe <matheus.altoe@nappsolutions.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+SQLAlchemy = "^1.4.22"
+fastapi = "^0.68.0"
+uvicorn = "^0.15.0"
+pika = "^1.2.0"
+aio-pika = "^6.8.0"
+psycopg2 = "^2.9.1"
+databases = {version = "0.3.2", extras = ["postgresql"]}
+Faker = "^8.11.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
