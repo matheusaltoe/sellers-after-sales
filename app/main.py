@@ -18,16 +18,18 @@ class SellerApp(FastAPI):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.pika_client = PikaClient(self.log_incoming_message)
+        self.pika_client = PikaClient(self.incoming_message)
 
     @classmethod
-    def log_incoming_message(cls, message: dict):
+    def incoming_message(cls, message: dict):
         db_scheduler = Scheduler(
             **message
         )
-        db.add(db_scheduler)
-        db.commit()
-        logger.info('Incoming message : %s', message)
+        try:
+            db.add(db_scheduler)
+            db.commit()
+        except:
+            db.rollback()
 
 app = SellerApp()
 app.include_router(router, prefix='/api/v1')
