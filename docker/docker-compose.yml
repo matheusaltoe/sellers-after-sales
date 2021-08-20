@@ -14,12 +14,14 @@ services:
   
   db:
     container_name: postgres
-    image: postgres:12
     restart: "always"
     ports:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    build:
+      context: ../
+      dockerfile: ./docker/db/Dockerfile
 
   rabbitmq:
     image: "rabbitmq:latest"
