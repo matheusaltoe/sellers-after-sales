@@ -43,3 +43,17 @@ def test_create_schedule():
     assert response.status_code == 200, response.text
     data = response.json()
     assert data["message"] == "success"
+
+
+def teste_get_schedule():
+    response = client.get(
+        "/scheduler/communication"
+    )
+    assert response.status_code == 200, response.text
+
+
+def teste_delete_schedule():
+    response = client.delete(
+        "/scheduler/communication/1"
+    )
+    assert response.status_code == 200, response.text    
