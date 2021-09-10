@@ -8,11 +8,12 @@ from models import Scheduler
 from pika_client import PikaClient
 from router import router
 from fastapi import FastAPI, Request
+from . import models
 
 dictConfig(log_config)
 logger = logging.getLogger('app-logger')
 
-db = SessionLocal()
+models.Base.metadata.create_all(bind=engine)
 
 class SellerApp(FastAPI):
 
@@ -34,6 +35,12 @@ class SellerApp(FastAPI):
 app = SellerApp()
 app.include_router(router, prefix='/api/v1')
 
+def get_db():
+    try:
+        db = SessionLocal()
+        yield db
+    finally:
+        db.close()
 
 @app.on_event('startup')
 async def startup():
