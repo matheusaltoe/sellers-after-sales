@@ -12,7 +12,12 @@ from schema import SchedulerSchema
 dictConfig(log_config)
 logger = logging.getLogger('app-logger')
 
-db = SessionLocal()
+def get_db():
+    try:
+        db = SessionLocal()
+        yield db 
+    finally:
+        db.close()
 
 router = APIRouter()
 
